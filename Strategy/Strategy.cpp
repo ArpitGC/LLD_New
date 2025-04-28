@@ -1,20 +1,73 @@
-// Strategy.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+// Strategy Interface
+class DriveStrategy {
+public:
+   virtual void drive() const = 0;
+   virtual ~DriveStrategy() = default;
+};
+
+// Concrete Strategies
+class NormalDrive : public DriveStrategy {
+public:
+   void drive() const override {
+      cout << "Normal driving mode." << endl;
+   }
+};
+
+class SportsDrive : public DriveStrategy {
+public:
+   void drive() const override {
+      cout << "Sports driving mode!" << endl;
+   }
+};
+
+class OffRoadDrive : public DriveStrategy {
+public:
+   void drive() const override {
+      cout << "Off-road driving mode!" << endl;
+   }
+};
+
+// Context Class
+class Vehicle {
+protected:
+   DriveStrategy* driveStrategy;
+public:
+   Vehicle(DriveStrategy* strategy) : driveStrategy(strategy) {}
+
+   void drive() const {
+      driveStrategy->drive();
+   }
+};
+
+// Different Vehicles
+class Car : public Vehicle {
+public:
+   Car() : Vehicle(new NormalDrive()) {}
+};
+
+class SportsCar : public Vehicle {
+public:
+   SportsCar() : Vehicle(new SportsDrive()) {}
+};
+
+class OffRoadVehicle : public Vehicle {
+public:
+   OffRoadVehicle() : Vehicle(new OffRoadDrive()) {}
+};
+
+// Main
+int main() {
+   Car car;
+   car.drive(); // Output: Normal driving mode.
+
+   SportsCar sportsCar;
+   sportsCar.drive(); // Output: Sports driving mode!
+
+   OffRoadVehicle offRoad;
+   offRoad.drive(); // Output: Off-road driving mode!
+
+   return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
