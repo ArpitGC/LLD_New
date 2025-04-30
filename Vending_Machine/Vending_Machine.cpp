@@ -23,10 +23,87 @@ public:
    void InsertCoin() override {
 
    }
+
+   void SelectItem() override {
+
+   }
+
+   void Dispense() override {
+
+
+   }
 };
 
 
+class HasCoinState : public State {
+private:
+   vendingMachine* machine;
+public :
+   HasCoinState(VendingMachine* m) : machine(m) {}
+   void InsertCoin() override {
 
+   }
+
+   void SelectItem() override {
+
+   }
+
+   void Dispense() override {
+
+
+   }
+};
+
+
+class ItemDispenseState : public State {
+private:
+   VendingMachine* machine;
+public:
+   ItemDispenseState(VendingMachine* m) : machine(m) {}
+   void InsertCoin() override {
+
+   }
+
+   void SelectItem() override {
+
+   }
+
+   void Dispense() override {
+
+
+   }
+
+};
+
+
+class SoldOutState :public State {
+private: 
+   VendingMachine* machine;
+public:
+   ItemDispenseState(VendingMachine* m) : machine(m) {}
+   void InsertCoin() override {
+
+   }
+
+   void SelectItem() override {
+
+   }
+
+   void Dispense() override {
+
+
+   }
+};
+
+
+class VendingState {
+
+
+
+
+
+
+};
 #include <iostream>
 
 int main()
