@@ -1,20 +1,68 @@
-// Observer_pattern.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <vector>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+// Observer interface
+class Observer {
+public:
+   virtual void update(float temperature, float humidity, float pressure) = 0;
+};
+
+// Subject (WeatherStation) class
+class WeatherStation {
+private:
+   float temperature;
+   float humidity;
+   float pressure;
+   std::vector<Observer*> observers;
+
+public:
+   void registerObserver(Observer* observer) {
+      observers.push_back(observer);
+   }
+
+   void removeObserver(Observer* observer) {
+      // You can implement the removal logic if needed.
+   }
+
+   void notifyObservers() {
+      for (Observer* observer : observers) {
+         observer->update(temperature, humidity, pressure);
+      }  
+   }
+
+   void setMeasurements(float temp, float hum, float press) {
+      temperature = temp;
+      humidity = hum;
+      pressure = press;
+      notifyObservers();
+   }
+};
+
+// Concrete Observer
+class Display : public Observer {
+public:
+   void update(float temperature, float humidity, float pressure) {
+      std::cout << "Display: Temperature = " << temperature
+         << "°C, Humidity = " << humidity
+         << "%, Pressure = " << pressure << " hPa"
+         << std::endl;
+   }
+};
+
+int main() {
+   WeatherStation weatherStation;
+
+   // Create displays
+   Display display1;
+   Display display2;
+
+   // Register displays as observers
+   weatherStation.registerObserver(&display1);
+   weatherStation.registerObserver(&display2);
+
+   // Simulate weather data updates
+   weatherStation.setMeasurements(25.5, 60, 1013.2);
+   weatherStation.setMeasurements(24.8, 58, 1014.5);
+
+   return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
